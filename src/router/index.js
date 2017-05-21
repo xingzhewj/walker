@@ -4,7 +4,8 @@ import Hello from '@/components/Hello';
 
 Vue.use(Router);
 
-const account = r => require.ensure([], () => r(require('../pages/account/accountMain.vue')), 'account');
+const menu = r => require.ensure([], () => r(require('../pages/menu/menuMain.vue')), 'menu');
+const order =  r => require.ensure([], () => r(require('../pages/orderMenu/orderMain.vue')), 'order');
 
 export default new Router(
     {
@@ -15,8 +16,12 @@ export default new Router(
                 component: Hello
             },
             {
-                path: '/account',
-                component: account
+                path: '/menu',
+                component: menu
+            },
+            {
+                path: '/order',
+                component: order
             }
         ]
     }
