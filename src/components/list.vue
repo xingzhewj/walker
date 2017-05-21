@@ -34,6 +34,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import "../common/css/vary.less";
 .dish-list {
     display: flex;
     padding: 10px;
@@ -67,7 +68,7 @@ export default {
         position: absolute;
         right: 0;
         top: 0;
-        border-top: 15px solid #f00;
+        border-top: 15px solid @themeColor;
         border-left: 15px solid transparent;
     }
 }

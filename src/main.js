@@ -4,7 +4,10 @@ import Vue from 'vue';
 import App from './App';
 import router from './router';
 import 'mint-ui/lib/style.css';
-import { Button, Swipe, SwipeItem, Header, Tabbar, TabItem, TabContainer, TabContainerItem } from 'mint-ui';
+import {
+    Button, Swipe, SwipeItem, Header, Tabbar, TabItem,
+    TabContainer, TabContainerItem, DatetimePicker
+} from 'mint-ui';
 
 Vue.component(Button.name, Button);
 Vue.component(Swipe.name, Swipe);
@@ -14,6 +17,7 @@ Vue.component(Tabbar.name, Tabbar);
 Vue.component(TabItem.name, TabItem);
 Vue.component(TabContainer.name, TabContainer);
 Vue.component(TabContainerItem.name, TabContainerItem);
+Vue.component(DatetimePicker.name, DatetimePicker);
 
 Vue.config.productionTip = false;
 

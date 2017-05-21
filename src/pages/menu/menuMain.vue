@@ -1,5 +1,5 @@
 <template lang="html">
-    <div class="account-container">
+    <div class="menu-container">
         <mt-header fixed title="菜谱">
             <router-link to="/order" class="feature-link" slot="right">
                 <mt-button icon="search"></mt-button>
@@ -20,17 +20,26 @@
         </div>
         <div class="body-wrap">
             <div class="dish-menu-wrap">
-                <p class="dish-title">今日菜单</p>
+                <p class="dish-title">菜单</p>
                 <div class="dish-container">
-                    <p class="dish-type">早餐</p>
+                    <p class="dish-type">
+                        早餐
+                        <span class="dish-date">{{ breakFastDate }}</span>
+                    </p>
                     <list :list="breakFast"></list>
                 </div>
                 <div class="dish-container">
-                    <p class="dish-type">午餐</p>
+                    <p class="dish-type">
+                        午餐
+                        <span class="dish-date">{{ lunchDate }}</span>
+                    </p>
                     <list :list="lunch"></list>
                 </div>
                 <div class="dish-container">
-                    <p class="dish-type">晚餐</p>
+                    <p class="dish-type">
+                        晚餐
+                        <span class="dish-date">{{ dinnerDate }}</span>
+                    </p>
                     <list :list="dinner"></list>
                 </div>
             </div>
@@ -50,17 +59,26 @@ export default {
     },
     data() {
         return {
+            breakFastDate: (new Date()).toLocaleDateString(),
+            lunchDate: (new Date()).toLocaleDateString(),
+            dinnerDate: (new Date()).toLocaleDateString()
         };
     },
     computed: {
         breakFast() {
-            return JSON.parse(storage.getItem('breakFast') || '[]');
+            let obj = JSON.parse(storage.getItem('breakFast') || '{}');
+            this.breakFastDate = obj.date || (new Date()).toLocaleDateString();
+            return obj.list || [];
         },
         lunch() {
-            return JSON.parse(storage.getItem('lunch') || '[]');;
+            let obj = JSON.parse(storage.getItem('lunch') || '{}');
+            this.lunchDate = obj.date || (new Date()).toLocaleDateString();
+            return obj.list || [];
         },
         dinner() {
-            return JSON.parse(storage.getItem('dinner') || '[]');;
+            let obj = JSON.parse(storage.getItem('dinner') || '{}');
+            this.dinnerDate = obj.date || (new Date()).toLocaleDateString();
+            return obj.list || [];
         }
     },
     methods: {
@@ -69,6 +87,12 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import "../../common/css/vary.less";
+.menu-container {
+    .mint-header {
+        background-color: @themeColor;
+    }
+}
 .banner-wrap {
     height: 200px;
 
@@ -101,7 +125,7 @@ export default {
     .dish-title {
         height: 30px;
         line-height: 30px;
-        background-color: #26a2ff;
+        background-color: @themeColor;
         color: #fff;
     }
 
@@ -113,7 +137,13 @@ export default {
     .dish-type {
         text-align: left;
         padding: 5px;
-        border-left: 3px solid #26a2ff;
+        background-color: #e4e4e4;
+        border-left: 3px solid @themeColor;
+        overflow: hidden;
+    }
+
+    .dish-date {
+        float: right;
     }
 }
 .banner-bg {
