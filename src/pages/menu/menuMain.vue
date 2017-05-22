@@ -52,6 +52,7 @@ import list from '@/components/list.vue';
 import storage from '@/common/db/storage';
 import "./css/menuMain.less";
 import '../orderMenu/css/orderMain.less';
+import axios from 'axios';
 
 export default {
     components: {
