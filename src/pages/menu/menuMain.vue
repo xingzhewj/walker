@@ -50,6 +50,8 @@
 <script>
 import list from '@/components/list.vue';
 import storage from '@/common/db/storage';
+import ajaxUrl from './ajaxUrl';
+import fAjax from '@/common/util/fAjax';
 import "./css/menuMain.less";
 import '../orderMenu/css/orderMain.less';
 
@@ -82,6 +84,13 @@ export default {
         }
     },
     methods: {
+    },
+    mounted() {
+        fAjax.get(
+            ajaxUrl.menuListUrl
+        ).then(res => {
+            
+        });
     }
 }
 </script>
