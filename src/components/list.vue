@@ -1,8 +1,10 @@
 <template lang="html">
     <ul class="dish-list">
         <li class="dish-item" v-for="item in list">
-            <div :class="'dish-img '  + item.cls" :data-dish="JSON.stringify(item)" v-on:click="selected">{{item.imgUrl}}</div>
-            <p class="dish-des">{{ item.des }}</p>
+            <div class="dish-img">
+                <img class="dish-img-url" :data-dish="JSON.stringify(item)" v-on:click="selected" :src="item.imgUrl" alt="">
+            </div>
+            <p class="dish-des">{{ item.name }}</p>
         </li>
     </ul>
 </template>
@@ -21,12 +23,14 @@ export default {
         selected(ev) {
             let tar = ev.target;
             let dishData = tar.dataset.dish;
+            dishData = JSON.parse(dishData);
             this.$emit('selectEvent', dishData);
-            if (tar.className.indexOf('dish-selected') === -1) {
-                tar.className = tar.className + ' dish-selected';
+            let tarParent = tar.parentElement;
+            if (tarParent.className.indexOf('dish-selected') === -1) {
+                tarParent.className = tarParent.className + ' dish-selected';
             }
             else {
-                tar.className = tar.className.replace(/ dish\-selected/g, '');
+                tarParent.className = tarParent.className.replace(/ dish\-selected/g, '');
             }
         }
     }
@@ -53,6 +57,11 @@ export default {
         height: 70px;
         background: no-repeat center;
         background-size: cover;
+    }
+
+    .dish-img-url {
+        width: 100%;
+        height: 100%;
     }
 
     .dish-des {

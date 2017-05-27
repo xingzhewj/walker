@@ -51,7 +51,9 @@
 <script>
 import menuList from '@/components/list.vue';
 import config from './config';
-import storage from '../../common/db/storage';
+import ajaxUrl from './ajaxUrl';
+import fAjax from '@/common/util/fAjax';
+import cloudConfig from '@/common/db/cloudConfig';
 import "./css/orderMain.less";
 
 export default {
@@ -67,42 +69,23 @@ export default {
         return {
             selected: 'breakFast',
             orderTitle: '早餐',
-            breakFastList: config.breakFast,
-            dinnerList: config.dinner,
-            lunchList: config.lunch,
-            breakDishData: [],
-            lunchDishData: [],
-            dinnerDishData: [],
+            breakFastList: [],
+            dinnerList: [],
+            lunchList: [],
             pickerValue: new Date()
         };
     },
     methods: {
         selectDish(data) {
             var dishType = this.$refs.tabbar.value;
-            switch (dishType) {
-                case 'breakFast':
-                    this.breakDishData.push(JSON.parse(data));
-                    storage.setItem('breakFast', JSON.stringify({
-                        date: this.pickerValueFormat,
-                        list: this.breakDishData
-                    }));
-                    break;
-                case 'lunch':
-                    this.lunchDishData.push(JSON.parse(data));
-                    storage.setItem('lunch', JSON.stringify({
-                        date: this.pickerValueFormat,
-                        list: this.lunchDishData
-                    }));
-                    break;
-                case 'dinner':
-                    this.dinnerDishData.push(JSON.parse(data));
-                    storage.setItem('dinner', JSON.stringify({
-                        date: this.pickerValueFormat,
-                        list: this.dinnerDishData
-                    }));
-                    break;
-                default:
-            }
+            fAjax.get(ajaxUrl.addFoodUrl, {
+                foodId: data.id,
+                time: +new Date()
+            }).then(data => {
+                console.log(data);
+            }, err => {
+                alert('失败！');
+            });
         },
         pickTime() {
             this.$refs.datePicker.open();
@@ -113,6 +96,30 @@ export default {
         datePickerFun(time) {
             this.dateFormat(time);
         }
+    },
+    mounted() {
+        fAjax.get(ajaxUrl.menuListUrl).then(data => {
+            data[1].forEach(item => {
+                let foodType = item.foodType;
+                let token = localStorage.getItem('token');
+                const temItem = {
+                    name: item.name,
+                    des: '',
+                    id: item.id,
+                    imgUrl: ajaxUrl.showImgUrl + '?appid=' + cloudConfig.appid
+                        + '&token=' + token + '&uuid=' + item.foodImg
+                };
+                if (foodType === 0) {
+                    this.breakFastList.push(temItem);
+                }
+                else if (foodType === 1) {
+                    this.lunchList.push(temItem);
+                }
+                else {
+                    this.dinnerList.push(temItem);
+                }
+            });
+        });
     },
     watch: {
         selected(val, oldVal) {

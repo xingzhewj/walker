@@ -4,33 +4,56 @@
  */
 
 import axios from 'axios';
+import jQuery from 'jquery';
 import auth from '../db/auth';
 import cloudConfig from '../db/cloudConfig';
 
-function getAjax(url, params) {
-    return axios.get(
-        url + '?appid=' + cloudConfig.appid,
-        {
-            params
-        }
-    );
+function success(result, res) {
+    const {data} = res;
+    if (data[0] === 'OK') {
+        result.resolve(data.splice(1));
+    }
+    else {
+        result.reject(res);
+    }
 }
 
-function postAjax(url, params) {
-
+function faile(result, res) {
+    result.reject(res);
 }
 
 function request(url, params, type) {
-    let fun = getAjax;
-    if (type === 'post') {
-        fun = postAjax;
-    }
-    return auth.check().then(token => {
+    let result = jQuery.Deferred();
+    auth.check().then(token => {
         params.token = token;
-        return fun(url, params);
+        let ajaxLoading = null;
+        if (type === 'get') {
+            ajaxLoading = axios.get(
+                url + '?appid=' + cloudConfig.appid,
+                {
+                    params
+                }
+            );
+        }
+        else {
+            ajaxLoading = axios.post(
+                url + '?appid=' + cloudConfig.appid,
+                {
+                    params
+                }
+            );
+        }
+        ajaxLoading.then(res => {
+            success.bind(this)(result, res);
+            return result;
+        }, err => {
+            fail.bind(this)(result, err);
+        });
     }, err => {
 
     });
+
+    return result;
 }
 
 export default {

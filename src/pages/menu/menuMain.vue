@@ -49,9 +49,9 @@
 
 <script>
 import list from '@/components/list.vue';
-import storage from '@/common/db/storage';
 import ajaxUrl from './ajaxUrl';
 import fAjax from '@/common/util/fAjax';
+import cloudConfig from '@/common/db/cloudConfig';
 import "./css/menuMain.less";
 import '../orderMenu/css/orderMain.less';
 
@@ -61,35 +61,46 @@ export default {
     },
     data() {
         return {
+            breakFast: [],
+            lunch: [],
+            dinner: [],
             breakFastDate: (new Date()).toLocaleDateString(),
             lunchDate: (new Date()).toLocaleDateString(),
             dinnerDate: (new Date()).toLocaleDateString()
         };
     },
     computed: {
-        breakFast() {
-            let obj = JSON.parse(storage.getItem('breakFast') || '{}');
-            this.breakFastDate = obj.date || (new Date()).toLocaleDateString();
-            return obj.list || [];
-        },
-        lunch() {
-            let obj = JSON.parse(storage.getItem('lunch') || '{}');
-            this.lunchDate = obj.date || (new Date()).toLocaleDateString();
-            return obj.list || [];
-        },
-        dinner() {
-            let obj = JSON.parse(storage.getItem('dinner') || '{}');
-            this.dinnerDate = obj.date || (new Date()).toLocaleDateString();
-            return obj.list || [];
-        }
     },
     methods: {
     },
     mounted() {
         fAjax.get(
-            ajaxUrl.menuListUrl
-        ).then(res => {
-            
+            ajaxUrl.foodSelectUrl,
+            {
+                pageSize: 50
+            }
+        ).then(data => {
+            const list = data[1];
+            list.forEach(item => {
+                fAjax.get(ajaxUrl.getMenuIdUrl + item.foodId + '/').then(data => {
+                    data = data[0];
+                    let token = localStorage.getItem('token');
+                    const obj = {
+                        name: data.name,
+                        imgUrl: ajaxUrl.showImgUrl + '?appid=' + cloudConfig.appid
+                            + '&token=' + token + '&uuid=' + data.foodImg
+                    }
+                    if (data.foodType === 0) {
+                        this.breakFast.push(obj);
+                    }
+                    else if (data.foodType === 1) {
+                        this.lunch.push(obj);
+                    }
+                    else {
+                        this.dinner.push(obj);
+                    }
+                });
+            });
         });
     }
 }
