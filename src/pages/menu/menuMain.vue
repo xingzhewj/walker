@@ -20,7 +20,6 @@
         </div>
         <div class="body-wrap">
             <div class="dish-menu-wrap">
-                <p class="dish-title">菜单</p>
                 <div class="dish-container">
                     <p class="dish-type">
                         早餐
@@ -161,15 +160,7 @@ export default {
         border: 1px solid #f5f5f5;
     }
 
-    .dish-title {
-        height: 30px;
-        line-height: 30px;
-        background-color: @themeColor;
-        color: #fff;
-    }
-
     .dish-container {
-        padding: 10px;
         border: 1px solid #f5f5f5;
     }
 

@@ -99,9 +99,7 @@ export default {
         }
     },
     mounted() {
-        fAjax.get(ajaxUrl.menuListUrl, {
-            foodType: 0
-        }).then(data => {
+        fAjax.get(ajaxUrl.menuListUrl).then(data => {
             fAjax.get(ajaxUrl.foodSelectSqlUrl, {
                 name: this.sqlName
             }).then(dt => {
