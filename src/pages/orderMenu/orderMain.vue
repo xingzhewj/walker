@@ -67,6 +67,7 @@ export default {
     },
     data() {
         return {
+            sqlName: 'selectMenu',
             selected: 'breakFast',
             orderTitle: '早餐',
             breakFastList: [],
@@ -98,26 +99,39 @@ export default {
         }
     },
     mounted() {
-        fAjax.get(ajaxUrl.menuListUrl).then(data => {
-            data[1].forEach(item => {
-                let foodType = item.foodType;
-                let token = localStorage.getItem('token');
-                const temItem = {
-                    name: item.name,
-                    des: '',
-                    id: item.id,
-                    imgUrl: ajaxUrl.showImgUrl + '?appid=' + cloudConfig.appid
-                        + '&token=' + token + '&uuid=' + item.foodImg
-                };
-                if (foodType === 0) {
-                    this.breakFastList.push(temItem);
-                }
-                else if (foodType === 1) {
-                    this.lunchList.push(temItem);
-                }
-                else {
-                    this.dinnerList.push(temItem);
-                }
+        fAjax.get(ajaxUrl.menuListUrl, {
+            foodType: 0
+        }).then(data => {
+            fAjax.get(ajaxUrl.foodSelectSqlUrl, {
+                name: this.sqlName
+            }).then(dt => {
+                data[1].forEach(item => {
+                    let foodType = item.foodType;
+                    let token = localStorage.getItem('token');
+                    const temItem = {
+                        name: item.name,
+                        des: '',
+                        id: item.id,
+                        imgUrl: ajaxUrl.showImgUrl + '?appid=' + cloudConfig.appid
+                            + '&token=' + token + '&uuid=' + item.foodImg
+                    };
+                    dt[1].filter(it => {
+                        if (it.foodId === item.id) {
+                            temItem.isSelect = true;
+                            return true;
+                        }
+                    });
+                    if (foodType === 0) {
+                        this.breakFastList.push(temItem);
+                    }
+                    else if (foodType === 1) {
+                        this.lunchList.push(temItem);
+                    }
+                    else {
+                        this.dinnerList.push(temItem);
+                    }
+                    console.log(this.breakFastList);
+                });
             });
         });
     },

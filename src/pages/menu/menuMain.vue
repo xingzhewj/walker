@@ -26,21 +26,21 @@
                         早餐
                         <span class="dish-date">{{ breakFastDate }}</span>
                     </p>
-                    <list :list="breakFast"></list>
+                    <list :list="breakFast()"></list>
                 </div>
                 <div class="dish-container">
                     <p class="dish-type">
                         午餐
                         <span class="dish-date">{{ lunchDate }}</span>
                     </p>
-                    <list :list="lunch"></list>
+                    <list :list="lunch()"></list>
                 </div>
                 <div class="dish-container">
                     <p class="dish-type">
                         晚餐
                         <span class="dish-date">{{ dinnerDate }}</span>
                     </p>
-                    <list :list="dinner"></list>
+                    <list :list="dinner()"></list>
                 </div>
             </div>
         </div>
@@ -61,9 +61,9 @@ export default {
     },
     data() {
         return {
-            breakFast: [],
-            lunch: [],
-            dinner: [],
+            menuList: [],
+            sqlName: 'selectMenu',
+            imgBasePath: ajaxUrl.getMenuIdUrl,
             breakFastDate: (new Date()).toLocaleDateString(),
             lunchDate: (new Date()).toLocaleDateString(),
             dinnerDate: (new Date()).toLocaleDateString()
@@ -72,34 +72,53 @@ export default {
     computed: {
     },
     methods: {
+        breakFast() {
+            let arr = [];
+            this.menuList.forEach(item => {
+                if (item.type === 0) {
+                    arr.push(item);
+                }
+            });
+            return arr;
+        },
+        lunch() {
+            let arr = [];
+            this.menuList.forEach(item => {
+                if (item.type === 1) {
+                    arr.push(item);
+                }
+            });
+            return arr;
+        },
+        dinner() {
+            let arr = [];
+            this.menuList.forEach(item => {
+                if (item.type === 2) {
+                    arr.push(item);
+                }
+            });
+            return arr;
+        }
     },
     mounted() {
         fAjax.get(
-            ajaxUrl.foodSelectUrl,
+            ajaxUrl.foodSelectSqlUrl,
             {
+                name: this.sqlName,
                 pageSize: 50
             }
         ).then(data => {
             const list = data[1];
+            this.menuList = [];
             list.forEach(item => {
-                fAjax.get(ajaxUrl.getMenuIdUrl + item.foodId + '/').then(data => {
-                    data = data[0];
-                    let token = localStorage.getItem('token');
-                    const obj = {
-                        name: data.name,
-                        imgUrl: ajaxUrl.showImgUrl + '?appid=' + cloudConfig.appid
-                            + '&token=' + token + '&uuid=' + data.foodImg
-                    }
-                    if (data.foodType === 0) {
-                        this.breakFast.push(obj);
-                    }
-                    else if (data.foodType === 1) {
-                        this.lunch.push(obj);
-                    }
-                    else {
-                        this.dinner.push(obj);
-                    }
-                });
+                let token = localStorage.getItem('token');
+                const obj = {
+                    name: item.name,
+                    type: item.foodType,
+                    imgUrl: ajaxUrl.showImgUrl + '?appid=' + cloudConfig.appid
+                        + '&token=' + token + '&uuid=' + item.foodImg
+                }
+                this.menuList.push(obj);
             });
         });
     }

@@ -1,7 +1,7 @@
 <template lang="html">
     <ul class="dish-list">
         <li class="dish-item" v-for="item in list">
-            <div class="dish-img">
+            <div :class="imgClass(item)">
                 <img class="dish-img-url" :data-dish="JSON.stringify(item)" v-on:click="selected" :src="item.imgUrl" alt="">
             </div>
             <p class="dish-des">{{ item.name }}</p>
@@ -18,6 +18,7 @@ export default {
         }
     },
     computed: {
+
     },
     methods: {
         selected(ev) {
@@ -32,6 +33,13 @@ export default {
             else {
                 tarParent.className = tarParent.className.replace(/ dish\-selected/g, '');
             }
+        },
+        imgClass(it) {
+            let cls = 'dish-img'
+            if (it.isSelect) {
+                cls += ' dish-selected';
+            }
+            return cls;
         }
     }
 }

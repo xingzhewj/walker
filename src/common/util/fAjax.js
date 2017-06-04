@@ -18,7 +18,7 @@ function success(result, res) {
     }
 }
 
-function faile(result, res) {
+function fail(result, res) {
     result.reject(res);
 }
 
