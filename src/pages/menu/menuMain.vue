@@ -61,7 +61,7 @@ export default {
     data() {
         return {
             menuList: [],
-            sqlName: 'selectMenu',
+            sqlName: 'todayMenu',
             imgBasePath: ajaxUrl.getMenuIdUrl,
             breakFastDate: (new Date()).toLocaleDateString(),
             lunchDate: (new Date()).toLocaleDateString(),

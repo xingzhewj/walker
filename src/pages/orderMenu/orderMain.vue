@@ -79,14 +79,24 @@ export default {
     methods: {
         selectDish(data) {
             var dishType = this.$refs.tabbar.value;
-            fAjax.get(ajaxUrl.addFoodUrl, {
-                foodId: data.id,
-                time: +new Date()
-            }).then(data => {
-                console.log(data);
-            }, err => {
-                alert('失败！');
-            });
+            console.log(data);
+            if (data.isSelected) {
+                fAjax.get(ajaxUrl.addFoodUrl, {
+                    foodId: data.id,
+                    time: +new Date()
+                }).then(data => {
+                    console.log(data);
+                }, err => {
+                    alert('失败！');
+                });
+            }
+            else {
+                fAjax.get(
+                    ajaxUrl.deleteFoodUrl + data.selectId + '/'
+                ).then(data => {
+                    console.log(data);
+                });
+            }
         },
         pickTime() {
             this.$refs.datePicker.open();
@@ -116,6 +126,7 @@ export default {
                     dt[1].filter(it => {
                         if (it.foodId === item.id) {
                             temItem.isSelect = true;
+                            temItem.selectId = it.id;
                             return true;
                         }
                     });
@@ -128,7 +139,6 @@ export default {
                     else {
                         this.dinnerList.push(temItem);
                     }
-                    console.log(this.breakFastList);
                 });
             });
         });

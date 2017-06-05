@@ -4,8 +4,9 @@
  */
 
 export default {
-    menuListUrl: 'https://v2.mashupcloud.cn/LIST/FoodMenu/',
+    menuListUrl: 'http://v2.mashupcloud.cn/LIST/FoodMenu/',
     foodSelectSqlUrl: 'http://v2.mashupcloud.cn/SQL/selectMenu/',
     addFoodUrl: 'http://v2.mashupcloud.cn/ADD/FoodSelect/',
-    showImgUrl: 'https://v2.mashupcloud.cn/system/filesystem_show.do'
+    deleteFoodUrl: 'http://v2.mashupcloud.cn/DELETE/FoodSelect/',
+    showImgUrl: 'http://v2.mashupcloud.cn/system/filesystem_show.do'
 };

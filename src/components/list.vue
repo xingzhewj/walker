@@ -25,14 +25,17 @@ export default {
             let tar = ev.target;
             let dishData = tar.dataset.dish;
             dishData = JSON.parse(dishData);
-            this.$emit('selectEvent', dishData);
             let tarParent = tar.parentElement;
             if (tarParent.className.indexOf('dish-selected') === -1) {
                 tarParent.className = tarParent.className + ' dish-selected';
+                dishData.isSelected = true;
             }
             else {
                 tarParent.className = tarParent.className.replace(/ dish\-selected/g, '');
+                dishData.isSelected = false;
             }
+            // 出发选中事件
+            this.$emit('selectEvent', dishData);
         },
         imgClass(it) {
             let cls = 'dish-img'
@@ -62,7 +65,7 @@ export default {
 
     .dish-img {
         width: 100%;
-        height: 70px;
+        height: 80px;
         background: no-repeat center;
         background-size: cover;
     }
@@ -82,11 +85,12 @@ export default {
     .dish-selected::before {
         content: '';
         display: inline-block;
+        width: 24px;
+        height: 24px;
         position: absolute;
-        right: 0;
+        left: 0;
         top: 0;
-        border-top: 15px solid @themeColor;
-        border-left: 15px solid transparent;
+        background-image: url(./css/img/select.png);
     }
 }
 </style>
