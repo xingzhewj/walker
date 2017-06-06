@@ -7,7 +7,7 @@ import fAjax from '../util/fAjax';
 import cloudConfig from './cloudConfig';
 import axios from 'axios';
 
-const authUrl = 'https://v2.mashupcloud.cn/developer/auth.do';
+const authUrl = 'http://v2.mashupcloud.cn/developer/auth.do';
 
 function auth() {
     const params = {
