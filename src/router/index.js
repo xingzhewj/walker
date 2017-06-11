@@ -10,11 +10,12 @@ const upload = r => require.ensure([], () => r(require('../pages/upload/uploadMa
 
 export default new Router(
     {
+        base: '/walker',
         routes: [
             {
                 path: '/',
-                name: 'Hello',
-                component: Hello
+                name: 'menu',
+                component: menu
             },
             {
                 path: '/menu',
