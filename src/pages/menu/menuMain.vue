@@ -44,6 +44,7 @@
             </div>
         </div>
         <mt-palette-button content="+" mainButtonStyle="color:#fff;background-color:#26a2ff;left:120px;" @expand="addMenu">
+            <div></div>
         </mt-palette-button>
     </div>
 </template>
