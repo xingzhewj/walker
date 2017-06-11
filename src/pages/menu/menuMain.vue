@@ -2,7 +2,7 @@
     <div class="menu-container">
         <mt-header fixed title="菜谱">
             <router-link to="/order" class="feature-link" slot="right">
-                <mt-button icon="search"></mt-button>
+                <mt-button icon="more"></mt-button>
             </router-link>
         </mt-header>
         <div class="banner-wrap">
@@ -43,11 +43,14 @@
                 </div>
             </div>
         </div>
+        <mt-palette-button content="+" mainButtonStyle="color:#fff;background-color:#26a2ff;left:120px;" @expand="addMenu">
+        </mt-palette-button>
     </div>
 </template>
 
 <script>
 import list from '@/components/list.vue';
+import VueRouter from 'vue-router';
 import ajaxUrl from './ajaxUrl';
 import fAjax from '@/common/util/fAjax';
 import cloudConfig from '@/common/db/cloudConfig';
@@ -97,6 +100,12 @@ export default {
                 }
             });
             return arr;
+        },
+        addMenu() {
+            const vueRouter = new VueRouter();
+            vueRouter.push({
+                path: '/upload'
+            });
         }
     },
     mounted() {

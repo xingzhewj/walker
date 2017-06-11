@@ -6,7 +6,8 @@ import router from './router';
 import 'mint-ui/lib/style.css';
 import {
     Button, Swipe, SwipeItem, Header, Tabbar, TabItem,
-    TabContainer, TabContainerItem, DatetimePicker
+    TabContainer, TabContainerItem, DatetimePicker,
+    Actionsheet, Field, Picker, PaletteButton
 } from 'mint-ui';
 
 Vue.component(Button.name, Button);
@@ -18,6 +19,10 @@ Vue.component(TabItem.name, TabItem);
 Vue.component(TabContainer.name, TabContainer);
 Vue.component(TabContainerItem.name, TabContainerItem);
 Vue.component(DatetimePicker.name, DatetimePicker);
+Vue.component(Actionsheet.name, Actionsheet);
+Vue.component(Field.name, Field);
+Vue.component(Picker.name, Picker);
+Vue.component(PaletteButton.name, PaletteButton);
 
 Vue.config.productionTip = false;
 
